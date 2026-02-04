@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,16 @@ SECRET_KEY = 'django-insecure-j14=3%qv5z_t1pwru7e9okxrq!3334fm_=ikv8xamh(2b%ol!%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+# Get the codespace name from environment variable
+CODESPACE_NAME = os.environ.get('CODESPACE_NAME', '')
+
+ALLOWED_HOSTS = [
+    '*',
+    'localhost',
+    '127.0.0.1',
+    '.app.github.dev',
+    f'{CODESPACE_NAME}-8000.app.github.dev' if CODESPACE_NAME else '',
+]
 
 
 # Application definition
@@ -39,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'djongo',
     'octofit_tracker',
 ]
 
