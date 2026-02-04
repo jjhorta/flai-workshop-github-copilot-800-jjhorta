@@ -36,6 +36,7 @@ ALLOWED_HOSTS = [
     '.app.github.dev',
     f'{CODESPACE_NAME}-8000.app.github.dev' if CODESPACE_NAME else '',
 ]
+# Configured for GitHub Codespaces
 
 
 # Application definition
