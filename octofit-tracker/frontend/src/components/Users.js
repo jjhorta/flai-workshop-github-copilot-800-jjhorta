@@ -31,13 +31,29 @@ function Users() {
       });
   }, []);
 
-  if (loading) return <div className="container mt-4"><p>Loading users...</p></div>;
-  if (error) return <div className="container mt-4"><p className="text-danger">Error: {error}</p></div>;
+  if (loading) return (
+    <div className="container mt-4 loading-spinner">
+      <div className="spinner-border text-primary" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+      <p className="mt-3">Loading users...</p>
+    </div>
+  );
+  
+  if (error) return (
+    <div className="container mt-4">
+      <div className="alert alert-danger" role="alert">
+        <h4 className="alert-heading">Error!</h4>
+        <p>{error}</p>
+      </div>
+    </div>
+  );
 
   return (
     <div className="container mt-4">
-      <h2>Users</h2>
-      <table className="table table-striped">
+      <h2 className="mb-4">Users</h2>
+      <div className="table-responsive">
+        <table className="table table-striped table-hover">
         <thead>
           <tr>
             <th>Name</th>
@@ -57,6 +73,12 @@ function Users() {
           ))}
         </tbody>
       </table>
+      </div>
+      {users.length === 0 && (
+        <div className="alert alert-info" role="alert">
+          No users found. Be the first to join!
+        </div>
+      )}
     </div>
   );
 }

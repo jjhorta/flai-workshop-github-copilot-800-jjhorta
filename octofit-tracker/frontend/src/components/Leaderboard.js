@@ -31,13 +31,29 @@ function Leaderboard() {
       });
   }, []);
 
-  if (loading) return <div className="container mt-4"><p>Loading leaderboard...</p></div>;
-  if (error) return <div className="container mt-4"><p className="text-danger">Error: {error}</p></div>;
+  if (loading) return (
+    <div className="container mt-4 loading-spinner">
+      <div className="spinner-border text-primary" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+      <p className="mt-3">Loading leaderboard...</p>
+    </div>
+  );
+  
+  if (error) return (
+    <div className="container mt-4">
+      <div className="alert alert-danger" role="alert">
+        <h4 className="alert-heading">Error!</h4>
+        <p>{error}</p>
+      </div>
+    </div>
+  );
 
   return (
     <div className="container mt-4">
-      <h2>Leaderboard</h2>
-      <table className="table table-striped">
+      <h2 className="mb-4">Leaderboard</h2>
+      <div className="table-responsive">
+        <table className="table table-striped table-hover">
         <thead>
           <tr>
             <th>Rank</th>
@@ -48,17 +64,27 @@ function Leaderboard() {
           </tr>
         </thead>
         <tbody>
-          {leaderboard.map((entry) => (
+          {leaderboard.map((entry, index) => (
             <tr key={entry._id}>
-              <td><strong>#{entry.rank}</strong></td>
-              <td>{entry.user_id}</td>
-              <td>{entry.total_calories}</td>
+              <td>
+                <span className={`badge ${index === 0 ? 'bg-warning' : index === 1 ? 'bg-secondary' : index === 2 ? 'bg-danger' : 'bg-primary'}`}>
+                  #{entry.rank || index + 1}
+                </span>
+              </td>
+              <td><strong>{entry.user_id}</strong></td>
+              <td><span className="badge bg-success">{entry.total_calories}</span></td>
               <td>{entry.total_activities}</td>
               <td>{new Date(entry.updated_at).toLocaleDateString()}</td>
             </tr>
           ))}
         </tbody>
       </table>
+      </div>
+      {leaderboard.length === 0 && (
+        <div className="alert alert-info" role="alert">
+          No leaderboard data available. Start competing!
+        </div>
+      )}
     </div>
   );
 }

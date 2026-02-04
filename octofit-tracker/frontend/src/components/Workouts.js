@@ -31,33 +31,61 @@ function Workouts() {
       });
   }, []);
 
-  if (loading) return <div className="container mt-4"><p>Loading workouts...</p></div>;
-  if (error) return <div className="container mt-4"><p className="text-danger">Error: {error}</p></div>;
+  if (loading) return (
+    <div className="container mt-4 loading-spinner">
+      <div className="spinner-border text-primary" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+      <p className="mt-3">Loading workouts...</p>
+    </div>
+  );
+  
+  if (error) return (
+    <div className="container mt-4">
+      <div className="alert alert-danger" role="alert">
+        <h4 className="alert-heading">Error!</h4>
+        <p>{error}</p>
+      </div>
+    </div>
+  );
 
   return (
     <div className="container mt-4">
-      <h2>Workouts</h2>
-      <div className="row">
-        {workouts.map((workout) => (
-          <div key={workout._id} className="col-md-4 mb-4">
-            <div className="card h-100">
-              <div className="card-body">
-                <h5 className="card-title">{workout.name}</h5>
-                <h6 className="card-subtitle mb-2 text-muted">
-                  <span className={`badge ${workout.difficulty_level === 'Advanced' ? 'bg-danger' : workout.difficulty_level === 'Intermediate' ? 'bg-warning' : 'bg-success'}`}>
-                    {workout.difficulty_level}
-                  </span>
-                </h6>
-                <p className="card-text">{workout.description}</p>
-                <ul className="list-group list-group-flush">
-                  <li className="list-group-item">Duration: {workout.duration} minutes</li>
-                  <li className="list-group-item">Type: {workout.exercise_type}</li>
-                </ul>
+      <h2 className="mb-4">Workouts</h2>
+      {workouts.length === 0 ? (
+        <div className="alert alert-info" role="alert">
+          No workouts available. Check back soon for new workout plans!
+        </div>
+      ) : (
+        <div className="row">
+          {workouts.map((workout) => (
+            <div key={workout._id} className="col-md-6 col-lg-4 mb-4">
+              <div className="card h-100 shadow-sm">
+                <div className="card-header">
+                  <h5 className="card-title mb-0">{workout.name}</h5>
+                </div>
+                <div className="card-body">
+                  <div className="mb-3">
+                    <span className={`badge ${workout.difficulty_level === 'Advanced' ? 'bg-danger' : workout.difficulty_level === 'Intermediate' ? 'bg-warning text-dark' : 'bg-success'}`}>
+                      {workout.difficulty_level}
+                    </span>
+                    <span className="badge bg-info text-dark ms-2">{workout.exercise_type}</span>
+                  </div>
+                  <p className="card-text">{workout.description}</p>
+                </div>
+                <div className="card-footer bg-transparent">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <small className="text-muted">
+                      <i className="bi bi-clock"></i> {workout.duration} min
+                    </small>
+                    <button className="btn btn-sm btn-primary">View Details</button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

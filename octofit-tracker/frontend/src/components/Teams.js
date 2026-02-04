@@ -31,27 +31,50 @@ function Teams() {
       });
   }, []);
 
-  if (loading) return <div className="container mt-4"><p>Loading teams...</p></div>;
-  if (error) return <div className="container mt-4"><p className="text-danger">Error: {error}</p></div>;
+  if (loading) return (
+    <div className="container mt-4 loading-spinner">
+      <div className="spinner-border text-primary" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+      <p className="mt-3">Loading teams...</p>
+    </div>
+  );
+  
+  if (error) return (
+    <div className="container mt-4">
+      <div className="alert alert-danger" role="alert">
+        <h4 className="alert-heading">Error!</h4>
+        <p>{error}</p>
+      </div>
+    </div>
+  );
 
   return (
     <div className="container mt-4">
-      <h2>Teams</h2>
-      <div className="row">
-        {teams.map((team) => (
-          <div key={team._id} className="col-md-6 mb-4">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">{team.name}</h5>
-                <p className="card-text">{team.description}</p>
-                <p className="text-muted">
-                  <small>Created: {new Date(team.created_at).toLocaleDateString()}</small>
-                </p>
+      <h2 className="mb-4">Teams</h2>
+      {teams.length === 0 ? (
+        <div className="alert alert-info" role="alert">
+          No teams found. Create a team and start competing!
+        </div>
+      ) : (
+        <div className="row">
+          {teams.map((team) => (
+            <div key={team._id} className="col-md-6 col-lg-4 mb-4">
+              <div className="card shadow-sm">
+                <div className="card-header bg-primary text-white">
+                  <h5 className="card-title mb-0 text-white">{team.name}</h5>
+                </div>
+                <div className="card-body">
+                  <p className="card-text">{team.description}</p>
+                </div>
+                <div className="card-footer text-muted">
+                  <small><i className="bi bi-calendar"></i> Created: {new Date(team.created_at).toLocaleDateString()}</small>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
